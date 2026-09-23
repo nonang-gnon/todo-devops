@@ -32,6 +32,10 @@ export default function Home() {
     );
   }
 
+  function deleteTask(id: number) {
+    setTasks(tasks.filter((task) => task.id !== id));
+  }
+
   return (
     <main className="min-h-screen bg-slate-50 px-4 py-10 text-slate-900 sm:px-6">
       <div className="mx-auto max-w-2xl">
@@ -109,6 +113,7 @@ export default function Home() {
                   </span>
                   <button
                     type="button"
+                    onClick={() => deleteTask(task.id)}
                     className="rounded-lg px-2 py-1 text-sm font-medium text-red-500 hover:bg-red-50"
                   >
                     Delete
