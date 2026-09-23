@@ -22,6 +22,16 @@ export default function Home() {
     setNewTask("");
   }
 
+  function toggleTask(id: number) {
+    setTasks(
+      tasks.map((task) =>
+        task.id === id
+          ? { ...task, completed: !task.completed }
+          : task
+      )
+    );
+  }
+
   return (
     <main className="min-h-screen bg-slate-50 px-4 py-10 text-slate-900 sm:px-6">
       <div className="mx-auto max-w-2xl">
@@ -84,7 +94,7 @@ export default function Home() {
                   <input
                     type="checkbox"
                     checked={task.completed}
-                    readOnly
+                    onChange={() => toggleTask(task.id)}
                     aria-label={`Complete ${task.text}`}
                     className="h-4 w-4 accent-blue-600"
                   />
