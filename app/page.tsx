@@ -1,3 +1,7 @@
+"use client";
+
+import { useState } from "react";
+
 const sampleTasks = [
   { id: 1, text: "Finish DevOps assignment", completed: false },
   { id: 2, text: "Study Next.js fundamentals", completed: false },
@@ -5,17 +9,28 @@ const sampleTasks = [
 ];
 
 export default function Home() {
-  const completed = sampleTasks.filter((task) => task.completed).length;
+  const [tasks, setTasks] = useState(sampleTasks);
+  const [newTask, setNewTask] = useState("");
+
+  const completed = tasks.filter((task) => task.completed).length;
+
+  function addTask() {
+    const text = newTask.trim();
+    if (!text) return;
+
+    setTasks([...tasks, { id: Date.now(), text, completed: false }]);
+    setNewTask("");
+  }
 
   return (
     <main className="min-h-screen bg-slate-50 px-4 py-10 text-slate-900 sm:px-6">
       <div className="mx-auto max-w-2xl">
         <header className="mb-8">
-  <h1 className="text-4xl font-bold tracking-tight">My ToDo App</h1>
-  <p className="mt-2 text-slate-500">
-    Keep your tasks in one place.
-  </p>
-</header>
+          <h1 className="text-4xl font-bold tracking-tight">My ToDo App</h1>
+          <p className="mt-2 text-slate-500">
+            Keep your tasks in one place.
+          </p>
+        </header>
 
         <section className="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm">
           <div className="border-b border-slate-100 p-6">
@@ -23,7 +38,7 @@ export default function Home() {
               <div>
                 <h2 className="text-lg font-semibold">Your tasks</h2>
                 <p className="mt-1 text-sm text-slate-500">
-                  {completed} of {sampleTasks.length} completed
+                  {completed} of {tasks.length} completed
                 </p>
               </div>
               <span className="rounded-lg bg-blue-50 px-3 py-1.5 text-sm font-medium text-blue-700">
@@ -36,10 +51,13 @@ export default function Home() {
                 type="text"
                 placeholder="What do you need to do?"
                 aria-label="New task"
+                value={newTask}
+                onChange={(event) => setNewTask(event.target.value)}
                 className="min-w-0 flex-1 rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm outline-none placeholder:text-slate-400 focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
               />
               <button
                 type="button"
+                onClick={addTask}
                 className="rounded-xl bg-blue-600 px-5 py-3 text-sm font-semibold text-white transition-colors hover:bg-blue-700"
               >
                 + Add Task
@@ -53,12 +71,12 @@ export default function Home() {
                 All tasks
               </h3>
               <span className="text-xs text-slate-400">
-                {sampleTasks.length} tasks
+                {tasks.length} tasks
               </span>
             </div>
 
             <ul className="space-y-3">
-              {sampleTasks.map((task) => (
+              {tasks.map((task) => (
                 <li
                   key={task.id}
                   className="flex items-center gap-3 rounded-xl border border-slate-200 px-4 py-4 transition-colors hover:bg-slate-50"
@@ -90,8 +108,6 @@ export default function Home() {
             </ul>
           </div>
         </section>
-
-        
       </div>
     </main>
   );
